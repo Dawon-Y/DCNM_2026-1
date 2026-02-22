@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import celebrageImage from '../assets/images/celebrate.jpg'
+import celebrageImage from '../assets/images/celebrate.jpeg'
 import QrCode from '../assets/images/qr.png'
 import promoVideo from '../assets/video/dcnm.mp4'
 
