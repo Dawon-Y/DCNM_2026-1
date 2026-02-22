@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import celebrageImage from '../assets/images/celebrate.jpg'
+import celebrageImage from '../assets/images/celebrate.jpeg'
 import QrCode from '../assets/images/qr.png'
 import promoVideo from '../assets/video/dcnm.mp4'
 
@@ -55,15 +55,17 @@ const FinalPage: React.FC = () => {
 						다음으로
 					</button>
 				) : (
-					<div className="w-full max-w-[650px] flex flex-col items-center gap-6">
-						<div className="w-full flex items-center justify-center gap-3 text-slate-700">
-							<span className="text-sm md:text-base">DC&M 신입 부원 모집 중! 지원하러 가기 →</span>
-							<img src={QrCode} alt="QR Code" className="w-20 h-20" />
+					<div className="w-full flex flex-col items-center gap-6">
+						<div className="w-72 md:w-80 px-2 flex items-center justify-between text-slate-700">
+							<p className="text-md lg:text-base text-right leading-snug">
+								DC&M 신입 부원 모집 중!<br />지원하러 가기 →
+							</p>
+							<img src={QrCode} alt="QR Code" className="w-25 h-25 md:w-20 md:h-20" />
 						</div>
 						<button
 							type="button"
 							onClick={() => navigate('/', { replace: true })}
-							className="w-90 h-14 rounded-md bg-[#5B82B8] text-white text-lg font-medium hover:bg-[#4A6EA3] transition-colors mt-6"
+							className="w-72 md:w-80 h-14 rounded-md bg-[#5B82B8] text-white text-lg font-medium hover:bg-[#4A6EA3] transition-colors mt-6"
 						>
 							처음으로
 						</button>

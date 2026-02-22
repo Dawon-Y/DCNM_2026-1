@@ -48,7 +48,7 @@ const GameStage: React.FC<GameStageProps> = ({ stageIndex, score, stage, navigat
 
     const timerSeconds = stage.stage === 1 ? 5 : stage.stage === 2 ? 4 : 3
 
-    const { timeLeft, start, stop } = useTimer({
+    const { start, stop } = useTimer({
         seconds: timerSeconds,
         onExpire: handleTimeout,
     })
@@ -83,8 +83,9 @@ const GameStage: React.FC<GameStageProps> = ({ stageIndex, score, stage, navigat
             {/* 타이머 바 */}
             <div className="w-full h-2 md:h-2.5 bg-slate-100 rounded-full overflow-hidden mb-8">
             <div
-                className="h-full bg-blue-600 rounded-full transition-all duration-1000 linear"
-                style={{ width: `${(timeLeft / timerSeconds) * 100}%`, transition: 'width 1s linear' }}
+                key={`timer-${stageIndex}-${timerSeconds}`}
+                className="h-full bg-blue-600 rounded-full timer-bar"
+                style={{ animationDuration: `${timerSeconds}s` }}
             />
             </div>
 
