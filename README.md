@@ -1,73 +1,93 @@
-# React + TypeScript + Vite
+# 다른 단어를 찾아라! 🔍
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+똑같은 단어들 사이에 숨어있는 딱 하나, 다른 단어를 찾는 집중력 게임입니다.  
+단계가 올라갈수록 그리드가 커지고 차이가 미묘해져요.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 게임 방법
 
-## React Compiler
+1. 화면에 가득 찬 단어 카드 중 **다른 단어 하나**를 찾아 클릭합니다.
+2. 단계마다 제한 시간은 **5초**입니다.
+3. 정답을 맞히면 다음 단계로 진행, 틀리거나 시간이 초과되면 실패 화면으로 이동합니다.
+4. 총 **5단계**를 모두 클리어하면 게임 완료!
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+| 단계 | 그리드 | 정답 단어 | 다른 단어 |
+|------|--------|-----------|-----------|
+| 1단계 | 2 × 2 | DC&M | DCNM |
+| 2단계 | 3 × 3 | DC&M | DCAM |
+| 3단계 | 4 × 4 | DC&M | DC8M |
+| 4단계 | 5 × 5 | DC&M | D C&M |
+| 5단계 | 6 × 6 | DC&M | DC 8M |
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 기술 스택
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **React 18** + **TypeScript**
+- **Vite**
+- **Tailwind CSS**
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 파일 구조
+
+```
+word-game/
+├── index.html
+├── package.json
+├── vite.config.ts
+├── tailwind.config.js
+├── postcss.config.js
+├── tsconfig.json
+└── src/
+    ├── App.tsx                  # 페이지 상태 관리 (main | game | success | fail)
+    ├── main.tsx
+    ├── index.css                # Tailwind + 커스텀 애니메이션
+    ├── pages/
+    │   ├── MainPage.tsx         # 시작 화면
+    │   ├── GamePage.tsx         # 게임 화면 (타이머 + 그리드)
+    │   ├── SuccessPage.tsx      # 단계 클리어 화면
+    │   └── FailPage.tsx         # 실패 화면
+    ├── components/
+    │   ├── WordGrid.tsx         # 단어 카드 그리드 레이아웃
+    │   └── WordCard.tsx         # 개별 단어 카드
+    ├── hooks/
+    │   └── useTimer.ts          # 카운트다운 타이머 훅
+    ├── constants/
+    │   └── stages.ts            # 5단계 설정 및 타이머 상수
+    ├── types/
+    │   └── index.ts             # 공통 타입 정의
+    └── utils/
+        └── generateGrid.ts      # 그리드 셀 생성 로직
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 페이지 흐름
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+MainPage
+   ↓ 게임 시작
+GamePage  ──→  SuccessPage  ──→  GamePage (다음 단계)
+   │                │                │
+   └──→  FailPage   └──→  MainPage   └──→  MainPage (5단계 클리어)
+             │
+             └──→  GamePage (재도전) / MainPage
+```
+
+---
+
+## 실행 방법
+
+**개발 서버**
+```bash
+npm install
+npm run dev
+```
+
+**프로덕션 빌드**
+```bash
+npm run build
+npm run preview
 ```
