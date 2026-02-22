@@ -11,14 +11,15 @@
 2. 단계마다 제한 시간은 **5초**입니다.
 3. 정답을 맞히면 다음 단계로 진행, 틀리거나 시간이 초과되면 실패 화면으로 이동합니다.
 4. 총 **5단계**를 모두 클리어하면 게임 완료!
+* 현재 키워드 예시. 변경 가능
 
-| 단계 | 그리드 | 정답 단어 | 다른 단어 |
-|------|--------|-----------|-----------|
-| 1단계 | 2 × 2 | DC&M | DCNM |
-| 2단계 | 3 × 3 | DC&M | DCAM |
-| 3단계 | 4 × 4 | DC&M | DC8M |
-| 4단계 | 5 × 5 | DC&M | D C&M |
-| 5단계 | 6 × 6 | DC&M | DC 8M |
+| 단계 | 그리드 | 정답 단어 |
+|------|--------|-----------|
+| 1단계 | 2 × 2 | DC&M |
+| 2단계 | 3 × 3 | DC&M |
+| 3단계 | 4 × 4 | DC&M |
+| 4단계 | 5 × 5 | DC&M |
+| 5단계 | 6 × 6 | DC&M |
 
 ---
 
@@ -91,3 +92,18 @@ npm run dev
 npm run build
 npm run preview
 ```
+
+**페이지 ui**
+<img width="1710" height="848" alt="image" src="https://github.com/user-attachments/assets/ab352e1d-94f1-45eb-b40a-1efc3be14e6e" />
+
+- 1단계 예시
+<img width="1710" height="831" alt="image" src="https://github.com/user-attachments/assets/d660d5ca-ff85-4641-a875-73b07ea9b775" />
+
+- 성공, 실패페이지
+<img width="1710" height="842" alt="image" src="https://github.com/user-attachments/assets/e3a98f05-2244-423f-92b7-bd15bd250dc1" />
+
+<img width="1708" height="852" alt="image" src="https://github.com/user-attachments/assets/fe590def-27cc-4d8c-9373-df4d4cdf3510" />
+
+- 최종 페이지(변경 예정)
+<img width="1710" height="858" alt="image" src="https://github.com/user-attachments/assets/6a5d9600-2c77-4172-90e6-e5b4dbace19b" />
+<img width="1710" height="842" alt="image" src="https://github.com/user-attachments/assets/ac38be3f-e413-4a72-b289-5405fee27ead" />
