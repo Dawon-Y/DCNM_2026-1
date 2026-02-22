@@ -18,7 +18,7 @@ const FONT_SIZE_MAP: Record<number, string> = {
   3: 'text-sm',     // 3x3
   4: 'text-xs',     // 4x4
   5: 'text-xs',     // 5x5
-  6: 'text-[10px]', // 6x6
+  6: 'text-xs', // 6x6
 }
 
 const WordGrid: React.FC<WordGridProps> = ({ cells, stage, disabled, onCellClick }) => {

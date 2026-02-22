@@ -1,1 +1,18 @@
 @import "tailwindcss";
+
+@keyframes timer-shrink {
+	from {
+		transform: scaleX(1);
+	}
+	to {
+		transform: scaleX(0);
+	}
+}
+
+.timer-bar {
+	transform-origin: left;
+	animation-name: timer-shrink;
+	animation-timing-function: linear;
+	animation-fill-mode: forwards;
+	will-change: transform;
+}

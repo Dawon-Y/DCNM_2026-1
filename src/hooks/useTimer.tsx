@@ -16,10 +16,12 @@ interface UseTimerReturn {
 }
 
 export function useTimer({ seconds, onExpire, autoStart = false }: UseTimerOptions): UseTimerReturn {
-    const [timeLeft, setTimeLeft] = useState(seconds)
+    const [remainingMs, setRemainingMs] = useState(seconds * 1000)
     const [isRunning, setIsRunning] = useState(autoStart)
-    const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+    const rafRef = useRef<number | null>(null)
     const onExpireRef = useRef(onExpire)
+    const endTimeRef = useRef<number | null>(null)
+    const durationRef = useRef(seconds * 1000)
 
     // onExpire가 바뀌어도 stale closure 방지
     useEffect(() => {
@@ -27,15 +29,17 @@ export function useTimer({ seconds, onExpire, autoStart = false }: UseTimerOptio
     }, [onExpire])
 
     const clearTimer = useCallback(() => {
-        if (intervalRef.current) {
-        clearInterval(intervalRef.current)
-        intervalRef.current = null
+        if (rafRef.current !== null) {
+            cancelAnimationFrame(rafRef.current)
+            rafRef.current = null
         }
     }, [])
 
     const start = useCallback(() => {
         clearTimer()
-        setTimeLeft(seconds)
+        durationRef.current = seconds * 1000
+        endTimeRef.current = performance.now() + durationRef.current
+        setRemainingMs(durationRef.current)
         setIsRunning(true)
     }, [seconds, clearTimer])
 
@@ -46,27 +50,36 @@ export function useTimer({ seconds, onExpire, autoStart = false }: UseTimerOptio
 
     const reset = useCallback(() => {
         clearTimer()
-        setTimeLeft(seconds)
+        durationRef.current = seconds * 1000
+        endTimeRef.current = null
+        setRemainingMs(durationRef.current)
         setIsRunning(false)
     }, [seconds, clearTimer])
 
     useEffect(() => {
         if (!isRunning) return
 
-        intervalRef.current = setInterval(() => {
-        setTimeLeft(prev => {
-            if (prev <= 1) {
-            clearTimer()
-            setIsRunning(false)
-            onExpireRef.current()
-            return 0
+        if (!endTimeRef.current) {
+            durationRef.current = seconds * 1000
+            endTimeRef.current = performance.now() + durationRef.current
+        }
+
+        const tick = () => {
+            const remaining = Math.max(0, (endTimeRef.current ?? performance.now()) - performance.now())
+            setRemainingMs(remaining)
+            if (remaining <= 0) {
+                clearTimer()
+                setIsRunning(false)
+                onExpireRef.current()
+                return
             }
-            return prev - 1
-        })
-        }, 1000)
+            rafRef.current = requestAnimationFrame(tick)
+        }
+
+        rafRef.current = requestAnimationFrame(tick)
 
         return clearTimer
-    }, [isRunning, clearTimer])
+    }, [isRunning, clearTimer, seconds])
 
     // 자동 시작
     useEffect(() => {
@@ -75,9 +88,9 @@ export function useTimer({ seconds, onExpire, autoStart = false }: UseTimerOptio
     }, [])
 
     return {
-        timeLeft,
+        timeLeft: Math.ceil(remainingMs / 1000),
         isRunning,
-        progress: timeLeft / seconds,
+        progress: durationRef.current > 0 ? remainingMs / durationRef.current : 0,
         start,
         stop,
         reset,
